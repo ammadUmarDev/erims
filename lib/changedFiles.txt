@@ -1,0 +1,8 @@
+CHANGES MADE IN FOLLOWING FILES
+edited models/event.dart
+edited pages/create_event.dart
+edited pages/create_event.dart
+
+created components/dropDownFieldErims
+
+*** components/dropdown2.dart is unnecessary now
