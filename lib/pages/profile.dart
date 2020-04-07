@@ -193,7 +193,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget ProfileButtons(double imageHeight, DocumentSnapshot docUser) {
-    if (userRole == "Mentor" ||
+   /* if (userRole == "Mentor" ||
         userRole == "Head of Department" ||
         userRole == "Head of Department") {
       //user is mentor -> hods:
@@ -207,7 +207,7 @@ class _ProfileState extends State<Profile> {
           children: <Widget>[
             ShadowBox(
               icon: Icon(Icons.watch_later),
-              heading: "View Pending Event Requests",
+              heading: "Pending Event Requests",
               text: "Approve or reject event requests after reviewing.",
               onTapFunction: () {
                 Navigator.push(
@@ -220,7 +220,7 @@ class _ProfileState extends State<Profile> {
             ),
             ShadowBox(
               icon: Icon(Icons.calendar_today),
-              heading: "View Created Events Requests",
+              heading: "Created Events Requests",
               text: "Approve or reject event requests after reviewing.",
               onTapFunction: () {
                 Navigator.push(
@@ -241,7 +241,7 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       );
-    } else {
+    } else */{
       return Container(
         padding: EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 30),
         height: MediaQuery.of(context).size.height - imageHeight,
@@ -252,7 +252,7 @@ class _ProfileState extends State<Profile> {
           children: <Widget>[
             ShadowBox(
               icon: Icon(Icons.calendar_today),
-              heading: "View Created Events Requests",
+              heading: "Created Events Requests",
               text: "Approve or reject event requests after reviewing.",
               onTapFunction: () {
                 Navigator.push(
@@ -263,10 +263,25 @@ class _ProfileState extends State<Profile> {
                     ));
               }, //
             ),
+
+            (userRole == "Mentor" ||
+                userRole == "Head of Department" ||
+                userRole == "Head of Department")?(ShadowBox(
+              icon: Icon(Icons.calendar_today),
+              heading: "Created Events Requests",
+              text: "Approve or reject event requests after reviewing.",
+              onTapFunction: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CreatedRequests(loggedInUser, docUser),
+                    ));
+              }, //
+            )):(Container()),
             SizedBox(
               height: 4,
-            ),
-            Divider(
+            ), Divider(
               thickness: 1,
               color: Colors.grey[300],
             ),

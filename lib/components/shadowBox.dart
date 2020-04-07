@@ -36,26 +36,33 @@ class ShadowBox extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Flexible(
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: Center(
                   child: icon,
-                  widthFactor: 2,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    H1(textBody: heading),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    BodyText(
-                      textBody: text,
-                    ),
-                  ],
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      FittedBox(
+                        child: Text(
+                          heading,
+                          style: H1TextStyle(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      BodyText(
+                        textBody: text,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

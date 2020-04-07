@@ -1,6 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+class H1TextStyle extends TextStyle {
+  final fontFamily = "Cantarell";
+  final fontSize = 18.0;
+  final Color color;
+  final fontWeight= FontWeight.w900;
+  H1TextStyle({this.color = const Color(0xFF35495e)});
+}
+
 class H1 extends StatelessWidget {
   H1({
     this.textBody,
@@ -12,12 +20,7 @@ class H1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       textBody,
-      style: TextStyle(
-        fontFamily: "Cantarell",
-        fontSize: 18.0,
-        color: color,
-        fontWeight: FontWeight.w900,
-      ),
+      style: H1TextStyle(),
     );
   }
 }
