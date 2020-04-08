@@ -4,6 +4,7 @@ import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/dropDown.dart';
 import 'package:erims/components/h1.dart';
 import 'package:erims/components/h3.dart';
+import 'package:erims/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../components/textFieldErims.dart';
@@ -18,7 +19,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _auth = FirebaseAuth.instance;
-  final usersRef = Firestore.instance.collection('users');
+  final _firestore = Firestore.instance;
   final DateTime timestamp = DateTime.now();
 
   List<Item> users = <Item>[
@@ -234,16 +235,8 @@ class _SignUpState extends State<SignUp> {
                                   final FirebaseUser user =
                                       await _auth.currentUser();
                                   final userId = user.uid;
-                                  usersRef.document(userId).setData({
-                                    "dateOfCreation": timestamp,
-                                    "designation": designation,
-                                    "email": emailTextField.getReturnValue(),
-                                    "fullName":
-                                        fullNameTextField.getReturnValue(),
-                                    "isAdmin": false,
-                                    "password":
-                                        passwordTextField.getReturnValue(),
-                                  });
+                                  final createdUser=User(userId,fullNameTextField.getReturnValue(),designation,emailTextField.getReturnValue(),passwordTextField.getReturnValue(),false,timestamp);
+                                  createdUser.updateFirebase(_firestore);
                                   Navigator.pushNamed(context, "dashBoard");
                                 }
                               } catch (e) {
