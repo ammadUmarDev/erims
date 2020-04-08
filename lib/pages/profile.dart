@@ -3,6 +3,7 @@ import 'package:erims/components/h2.dart';
 import 'package:erims/components/profilePainter.dart';
 import 'package:erims/components/progress.dart';
 import 'package:erims/components/shadowBox.dart';
+import 'package:erims/models/user.dart';
 import 'package:erims/pages/createdRequests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final _auth = FirebaseAuth.instance;
   static FirebaseUser loggedInUser;
-  DocumentSnapshot docUser;
-  String userRole = "Student";
+  User userObj;
+  //String userRole = "Student";
   bool load = false;
 
   @override
@@ -40,11 +41,12 @@ class _ProfileState extends State<Profile> {
             .get();
         if (tempdoc != null) {
           setState(() {
-            docUser = tempdoc;
-            userRole = docUser['designation'];
+            final docUser = tempdoc;
+            //userRole = docUser['designation'];
+            userObj=User.fromFirebaseDocument(docUser);
             load = true;
           });
-          print(docUser['designation'] + " is Online!");
+          print(userObj.designation + " is Online!");
         }
       }
     } catch (e) {
@@ -65,11 +67,11 @@ class _ProfileState extends State<Profile> {
       );
 
       String avatarImage = 'assets/images/studentDefaultAvatar.png';
-      if (docUser['designation'] == 'Director') {
+      if (userObj.designation == 'Director') {
         avatarImage = 'assets/images/directorDefaultAvatar.png';
-      } else if (docUser['designation'] == 'Society') {
+      } else if (userObj.designation == 'Society') {
         avatarImage = 'assets/images/societyDefaultAvatar.png';
-      } else if (docUser['designation'] == 'Mentor') {
+      } else if (userObj.designation == 'Mentor') {
         avatarImage = 'assets/images/mentorDefaultAvatar.png';
       }
 
@@ -122,11 +124,14 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               H1(
-                                textBody: docUser['fullName'], //'name',
+                                textBody: userObj.fullName, //'name',
                               ),
                               BodyText(
-                                textBody: docUser['designation'],
+                                textBody: userObj.designation,
                               ),
+                              /*BodyText(
+                                textBody: userObj.department,
+                              ),*/
                             ],
                           ),
                         ),
@@ -139,7 +144,7 @@ class _ProfileState extends State<Profile> {
                 top: imageHeight,
                 child: Column(
                   children: <Widget>[
-                    profileButtons(imageHeight, docUser),
+                    profileButtons(imageHeight, userObj),
                     H2(textBody: "Notifications"),
                   ],
                 ),
@@ -198,7 +203,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  Widget profileButtons(double imageHeight, DocumentSnapshot docUser) {
+  Widget profileButtons(double imageHeight, User userObj) {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 30),
       height: MediaQuery.of(context).size.height - imageHeight,
@@ -216,13 +221,13 @@ class _ProfileState extends State<Profile> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CreatedRequests(loggedInUser, docUser),
+                        CreatedRequests(loggedInUser, userObj),
                   ));
             }, //
           ),
-          (userRole == "Mentor" ||
-                  userRole == "Head of Department" ||
-                  userRole == "Head of Department")
+          (userObj.designation == "Mentor" ||
+                  userObj.designation == "Head of Department" ||
+                  userObj.designation == "Head of Department")
               ? (ShadowBox(
                   icon: Icon(Icons.calendar_today),
                   heading: "Created Events Requests",
@@ -232,7 +237,7 @@ class _ProfileState extends State<Profile> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CreatedRequests(loggedInUser, docUser),
+                              CreatedRequests(loggedInUser, userObj),
                         ));
                   }, //
                 ))

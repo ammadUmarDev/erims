@@ -3,6 +3,7 @@ import 'package:erims/components/PendingRequestCard.dart';
 import 'package:erims/components/bodyText.dart';
 import 'package:erims/components/h2.dart';
 import 'package:erims/components/h3.dart';
+import 'package:erims/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -166,7 +167,7 @@ class Event {
     SlidingCardController controller,
     String documentID,
     FirebaseUser loggedInUser,
-    DocumentSnapshot docUser,
+    User docUser,
   ) {
     return Center(
       child: PendingRequestCard(
@@ -180,7 +181,7 @@ class Event {
         },
         pending: true,
         currentUser: loggedInUser,
-        userDocument: docUser,
+        user: docUser,
         slidingCardController: controller,
         eventId: documentID,
         eventName: eName,
@@ -198,7 +199,7 @@ class Event {
     SlidingCardController controller,
     String documentID,
     FirebaseUser loggedInUser,
-    DocumentSnapshot docUser,
+    User docUser,
   ) {
     return Center(
       child: PendingRequestCard(
@@ -212,7 +213,7 @@ class Event {
         },
         pending: false,
         currentUser: loggedInUser,
-        userDocument: docUser,
+        user: docUser,
         slidingCardController: controller,
         eventId: documentID,
         eventName: eName,

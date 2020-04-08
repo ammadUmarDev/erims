@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erims/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_card/sliding_card.dart';
@@ -20,7 +21,7 @@ class PendingRequestCard extends StatefulWidget {
     this.eventStartDateTime,
     this.eventEndDateTime,
     this.currentUser,
-    this.userDocument,
+    this.user,
     this.pending,
   }) : super(key: key);
 
@@ -32,7 +33,7 @@ class PendingRequestCard extends StatefulWidget {
   final String eventEndDateTime;
   final String eventId;
   final FirebaseUser currentUser;
-  final DocumentSnapshot userDocument;
+  final User user;
   final bool pending;
 
   @override
@@ -56,7 +57,7 @@ class _PendingRequestCardState extends State<PendingRequestCard> {
         hiddenCardHeight: SizeConfig.safeBlockVertical * 0,
         frontCardWidget: RequestFrontCard(
           pending: widget.pending,
-          userDocument: widget.userDocument,
+          user: widget.user,
           currentUser: widget.currentUser,
           eventID: widget.eventId,
           eventDesc: widget.eventDesc,

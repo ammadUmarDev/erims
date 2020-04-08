@@ -4,6 +4,7 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erims/components/bodyText.dart';
 import 'package:erims/components/progress.dart';
+import 'package:erims/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class RequestFrontCard extends StatefulWidget {
   final String imgLink;
   final String eventID;
   final FirebaseUser currentUser;
-  final DocumentSnapshot userDocument;
+  final User user;
   final bool pending;
 
   const RequestFrontCard(
@@ -41,7 +42,7 @@ class RequestFrontCard extends StatefulWidget {
       @required this.onRedCloseButtonTapped,
       this.eventID,
       this.currentUser,
-      this.userDocument,
+      this.user,
       this.pending})
       : super(key: key);
   @override
@@ -216,8 +217,8 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
 
   Widget returnStreamBuilderWithRole() {
     if (widget.pending == true) {
-      if (widget.userDocument['designation'] == "Mentor" &&
-          widget.userDocument['designation'] != null) {
+      if (widget.user.designation == "Mentor" &&
+          widget.user.designation != null) {
         //user is mentor -> hods:
         return RaisedButton(
             disabledElevation: 0,
@@ -356,8 +357,8 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                     ]).show() //widget.onAccep
             );
       }
-      if (widget.userDocument['designation'] == "Head of Department" &&
-          widget.userDocument['designation'] != null) {
+      if (widget.user.designation == "Head of Department" &&
+          widget.user.designation != null) {
         //user is hod -> directors:
         return RaisedButton(
             disabledElevation: 0,
@@ -495,8 +496,8 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                     ]).show() //widget.onAccep
             );
       }
-      if (widget.userDocument['designation'] == "Director" &&
-          widget.userDocument['designation'] != null) {
+      if (widget.user.designation == "Director" &&
+          widget.user.designation != null) {
         //user is director -> ultimate approval
         return RaisedButton(
             disabledElevation: 0,

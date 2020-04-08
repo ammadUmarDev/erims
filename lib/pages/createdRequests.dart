@@ -4,6 +4,7 @@ import 'package:erims/components/sizeConfig.dart';
 import 'package:erims/models/event.dart';
 import 'package:erims/components/header.dart';
 import 'package:erims/components/progress.dart';
+import 'package:erims/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:sliding_card/sliding_card.dart';
 
 class CreatedRequests extends StatefulWidget {
   var loggedInUser;
-  var docUser;
+  User docUser;
 
   CreatedRequests(this.loggedInUser, this.docUser) {
     print(this.loggedInUser.runtimeType);
@@ -38,18 +39,20 @@ class _CreatedRequestsState extends State<CreatedRequests> {
     try {
       final user = await _auth.currentUser();
       if (user != null) {
+        widget.loggedInUser = user;
         final DocumentSnapshot tempdoc = await Firestore.instance
             .collection('users')
             .document(widget.loggedInUser.uid)
             .get();
-        setState(() {
-          widget.loggedInUser = user;
-          if (tempdoc != null) {
-            widget.docUser = tempdoc;
-            print(widget.docUser['designation'] + " is Online!");
-            print(widget.loggedInUser.uid);
-          }
-        });
+        if (tempdoc != null) {
+          setState(() {
+            final docUser = tempdoc;
+            //userRole = docUser['designation'];
+            widget.docUser=User.fromFirebaseDocument(docUser);
+            load = true;
+          });
+          print(widget.docUser.designation + " is Online!");
+        }
       }
     } catch (e) {
       print(e);
