@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    loggedInUser=null;
+    loggedInUser = null;
     getCurrentUser();
   }
 
@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
           setState(() {
             final docUser = tempdoc;
             //userRole = docUser['designation'];
-            userObj=User.fromFirebaseDocument(docUser);
+            userObj = User.fromFirebaseDocument(docUser);
             load = true;
           });
           print(userObj.designation + " is Online!");
@@ -129,9 +129,14 @@ class _ProfileState extends State<Profile> {
                               BodyText(
                                 textBody: userObj.designation,
                               ),
-                              /*BodyText(
-                                textBody: userObj.department,
-                              ),*/
+                              (userObj.department != null) //TODO: remove this condition later when ALL data has dept in it
+                                  ? (FittedBox(
+                                      child: Text(
+                                        userObj.department,
+                                        style: BodyTextStyle(),
+                                      ),
+                                    ))
+                                  : (Container()),
                             ],
                           ),
                         ),
