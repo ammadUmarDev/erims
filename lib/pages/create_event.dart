@@ -2,6 +2,7 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/header.dart';
+import 'package:erims/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _CreateEventState extends State<CreateEvent> {
   DocumentSnapshot docUser;
   String userRole = "Student";
   String forwardToRole;
+  User userObj;
 
   @override
   void initState() {
@@ -45,16 +47,14 @@ class _CreateEventState extends State<CreateEvent> {
     try {
       final user = await _auth.currentUser();
       if (user != null) {
-        setState(() {
-          loggedInUser = user;
-        });
+        loggedInUser = user;
         final DocumentSnapshot tempdoc = await Firestore.instance
             .collection('users')
             .document(loggedInUser.uid)
             .get();
         if (tempdoc != null) {
           setState(() {
-            docUser = tempdoc;
+            final docUser = tempdoc;
             userRole = docUser['designation'];
             if (userRole == "Student" || userRole == "Society") {
               forwardToRole = "Mentor";
@@ -68,8 +68,10 @@ class _CreateEventState extends State<CreateEvent> {
             if (userRole == "Director") {
               forwardToRole = "Director";
             }
+            userObj = User.fromFirebaseDocument(docUser);
+            //load = true;
           });
-          print(docUser['designation'] + " is Online!");
+          print(userObj.designation + " is Online!");
         }
       }
     } catch (e) {
@@ -114,15 +116,8 @@ class _CreateEventState extends State<CreateEvent> {
   TextFieldErims eVenueTextField = TextFieldErims(
     textFieldText: 'Venue', //TODO: add dropdown for available venues
   );
-  TextFieldErims oDepartmentTextField = TextFieldErims(
-    textFieldText: 'Department', //TODO: add dropdown of depts of uni
-  );
-  TextFieldErims oNameTextField = TextFieldErims(
-    textFieldText: 'Organizer Name',
-    textFieldIcon: Icon(Icons.person),
-  );
   TextFieldErims oContactNoTextField = TextFieldErims(
-    textFieldText: 'Contact No', //TODO: add verification of phone no
+    textFieldText: 'Active Contact No', //TODO: add verification of phone no
     keyboardType: TextInputType.phone,
     textFieldIcon: Icon(Icons.phone),
   );
@@ -201,10 +196,10 @@ class _CreateEventState extends State<CreateEvent> {
                 H2(
                   textBody: 'Organizer\'s Details',
                 ),
-                InterTextFieldSpacing(),
-                oDepartmentTextField,
-                InterTextFieldSpacing(),
-                oNameTextField,
+                //InterTextFieldSpacing(),
+                //oDepartmentTextField,
+                //InterTextFieldSpacing(),
+                //oNameTextField,
                 InterTextFieldSpacing(),
                 oContactNoTextField,
                 InterTextFieldSpacing(),
@@ -387,8 +382,8 @@ class _CreateEventState extends State<CreateEvent> {
                           int.parse(eAttendeesNoTextField.getReturnValue()),
                           eVenueTextField.getReturnValue(),
                           DateTime.now(),
-                          oDepartmentTextField.getReturnValue(),
-                          oNameTextField.getReturnValue(),
+                          userObj.department,
+                          userObj.fullName,
                           oContactNoTextField.getReturnValue(),
                           rMenuItemsTextField.getReturnValue(),
                           int.parse(rPersonNoTextField.getReturnValue()),
