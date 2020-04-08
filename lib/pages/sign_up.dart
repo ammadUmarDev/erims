@@ -1,5 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erims/components/bodyText.dart';
 import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/dropDown.dart';
 import 'package:erims/components/h1.dart';
@@ -21,6 +22,12 @@ class _SignUpState extends State<SignUp> {
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;
   final DateTime timestamp = DateTime.now();
+
+  List<String> departments = <String>[
+    'Computer Science',
+    'Electrical Engineering',
+    'School of Management'
+  ];
 
   List<Item> users = <Item>[
     const Item(
@@ -70,6 +77,7 @@ class _SignUpState extends State<SignUp> {
   );
   Item designationItem;
   String designation;
+  String department;
   TextFieldErims passwordTextField = TextFieldErims(
     textFieldText: 'Password',
     textFieldIcon: Icon(Icons.lock),
@@ -194,11 +202,65 @@ class _SignUpState extends State<SignUp> {
                                           SizedBox(
                                             width: 15,
                                           ),
-                                          Text(
-                                            user.name,
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                          H3(
+                                            textBody: user.name,
                                           ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        InterTextFieldSpacing(),
+                        Container(
+                          height: 55.0,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.grey[500],
+                              )),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Icon(
+                                    Icons.location_on,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  isDense: false,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay',
+                                    fontSize: 15,
+                                  ),
+                                  hint: Text("Department"),
+                                  value: department,
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      department = value;
+                                      print("department selected : " +
+                                          department);
+                                    });
+                                  },
+                                  items: departments.map((String dept) {
+                                    return DropdownMenuItem<String>(
+                                      //TODO: add icon to the dropdonw
+                                      value: dept,
+                                      child: Row(
+                                        children: <Widget>[
+                                          H3(textBody: dept),
                                         ],
                                       ),
                                     );
@@ -235,7 +297,15 @@ class _SignUpState extends State<SignUp> {
                                   final FirebaseUser user =
                                       await _auth.currentUser();
                                   final userId = user.uid;
-                                  final createdUser=User(userId,fullNameTextField.getReturnValue(),designation,emailTextField.getReturnValue(),passwordTextField.getReturnValue(),false,timestamp);
+                                  final createdUser = User(
+                                      userId,
+                                      fullNameTextField.getReturnValue(),
+                                      designation,
+                                      emailTextField.getReturnValue(),
+                                      passwordTextField.getReturnValue(),
+                                      department,
+                                      false,
+                                      timestamp);
                                   createdUser.updateFirebase(_firestore);
                                   Navigator.pushNamed(context, "dashBoard");
                                 }
