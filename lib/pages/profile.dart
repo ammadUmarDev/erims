@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import '../components/bodyText.dart';
 import '../components/h1.dart';
+import 'pendingRequests.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -75,6 +76,7 @@ class _ProfileState extends State<Profile> {
         avatarImage = 'assets/images/mentorDefaultAvatar.png';
       }
 
+      // ignore: non_constant_identifier_names
       Widget LoadorNot() {
         if (load == false)
           return linearProgress(context);
@@ -129,7 +131,8 @@ class _ProfileState extends State<Profile> {
                               BodyText(
                                 textBody: userObj.designation,
                               ),
-                              (userObj.department != null) //TODO: remove this condition later when ALL data has dept in it
+                              (userObj.department !=
+                                      null) //TODO: remove this condition later when ALL data has dept in it
                                   ? (FittedBox(
                                       child: Text(
                                         userObj.department,
@@ -220,7 +223,7 @@ class _ProfileState extends State<Profile> {
           ShadowBox(
             icon: Icon(Icons.calendar_today),
             heading: "Created Events Requests",
-            text: "Approve or reject event requests after reviewing.",
+            text: "View status or edit created event requests.",
             onTapFunction: () {
               Navigator.push(
                   context,
@@ -232,17 +235,17 @@ class _ProfileState extends State<Profile> {
           ),
           (userObj.designation == "Mentor" ||
                   userObj.designation == "Head of Department" ||
-                  userObj.designation == "Head of Department")
+                  userObj.designation == "Director")
               ? (ShadowBox(
                   icon: Icon(Icons.calendar_today),
-                  heading: "Created Events Requests",
-                  text: "Approve or reject event requests after reviewing.",
+                  heading: "Pending Event Requests",
+                  text: "Review and approve or reject event requests.",
                   onTapFunction: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CreatedRequests(loggedInUser, userObj),
+                              PendingRequests(loggedInUser, userObj),
                         ));
                   }, //
                 ))

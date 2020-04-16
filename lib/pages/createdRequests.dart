@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:erims/components/PendingRequestCard.dart';
 import 'package:erims/components/sizeConfig.dart';
 import 'package:erims/models/event.dart';
 import 'package:erims/components/header.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_card/sliding_card.dart';
 
+// ignore: must_be_immutable
 class CreatedRequests extends StatefulWidget {
   var loggedInUser;
   User docUser;
@@ -48,7 +48,7 @@ class _CreatedRequestsState extends State<CreatedRequests> {
           setState(() {
             final docUser = tempdoc;
             //userRole = docUser['designation'];
-            widget.docUser=User.fromFirebaseDocument(docUser);
+            widget.docUser = User.fromFirebaseDocument(docUser);
             load = true;
           });
           print(widget.docUser.designation + " is Online!");
@@ -64,7 +64,7 @@ class _CreatedRequestsState extends State<CreatedRequests> {
     SizeConfig().init(context);
 
     return Scaffold(
-      appBar: header(context, true),
+      appBar: header(context, true, "Created Event Requests"),
       body: Container(
         margin: EdgeInsets.only(
           top: 10,

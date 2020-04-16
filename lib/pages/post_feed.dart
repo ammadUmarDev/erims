@@ -18,7 +18,7 @@ class _PostFeedState extends State<PostFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, false),
+      appBar: header(context, false, "Event Feed"),
       body: Container(
         margin: EdgeInsets.only(
           top: 10,

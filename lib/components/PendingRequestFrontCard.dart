@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erims/components/bodyText.dart';
-import 'package:erims/components/progress.dart';
 import 'package:erims/models/user.dart';
+import 'package:erims/pages/view_event_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +52,15 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
   String _categoryFT;
   bool dropDownFT;
   String forwardToUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      isinfoPressed = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,26 +154,28 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
-                                      if (isinfoPressed == true) {
-                                        isinfoPressed = false;
-                                        widget.onRedCloseButtonTapped();
-                                        setState(() {});
-                                      } else {
-                                        isinfoPressed = true;
-                                        widget.onInfoTapped();
-                                        setState(() {});
-                                      }
+                                      isinfoPressed = false;
+                                      widget.onRedCloseButtonTapped();
+                                      setState(() {});
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ViewEventInfo(
+                                              eventDocumentID: widget.eventID,
+                                              loggedInUser: widget.currentUser,
+                                            ),
+                                          ));
                                     },
                                     child: isinfoPressed
                                         ? Transform.rotate(
                                             angle: 0.7777,
                                             child: Icon(
-                                              Icons.info_outline,
+                                              Icons.info,
                                               size: SizeConfig
                                                       .safeBlockHorizontal *
                                                   7,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                           )
                                         : Icon(
@@ -238,7 +247,7 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                     style: AlertStyle(
                       titleStyle: TextStyle(
                         fontFamily: "Cantarell",
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w900,
                       ),
@@ -378,7 +387,7 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                     style: AlertStyle(
                       titleStyle: TextStyle(
                         fontFamily: "Cantarell",
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w900,
                       ),

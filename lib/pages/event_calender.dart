@@ -99,7 +99,7 @@ class _EventCalenderState extends State<EventCalender> {
         .toList());
 
     return Scaffold(
-      appBar: header(context, false),
+      appBar: header(context, false, "Event Calender"),
       body: ListView(
         children: children,
       ),

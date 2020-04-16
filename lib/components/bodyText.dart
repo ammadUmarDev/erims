@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class BodyTextStyle extends TextStyle {
   final fontFamily = "Cantarell";
-  final fontSize = 14.0;
+  final fontSize = 13.0;
   final Color color;
   BodyTextStyle({this.color = const Color(0xFF35495e)});
 }

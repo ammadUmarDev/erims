@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:erims/components/PendingRequestCard.dart';
 import 'package:erims/components/sizeConfig.dart';
 import 'package:erims/models/event.dart';
 import 'package:erims/components/header.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_card/sliding_card.dart';
 
+// ignore: must_be_immutable
 class PendingRequests extends StatefulWidget {
   var loggedInUser;
   var docUser;
@@ -60,7 +60,7 @@ class _PendingRequestsState extends State<PendingRequests> {
     SizeConfig().init(context);
 
     return Scaffold(
-      appBar: header(context, true),
+      appBar: header(context, true, "Pending Event Requests"),
       body: Container(
         margin: EdgeInsets.only(
           top: 10,

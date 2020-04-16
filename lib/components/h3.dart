@@ -14,7 +14,7 @@ class H3 extends StatelessWidget {
       textBody,
       style: TextStyle(
         fontFamily: "Cantarell",
-        fontSize: 14.0,
+        fontSize: 13.0,
         color: color,
         fontWeight: FontWeight.w900,
       ),

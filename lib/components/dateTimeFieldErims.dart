@@ -20,7 +20,7 @@ class _DateTimeFieldErimsState extends State<DateTimeFieldErims> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55.0,
+      height: 48.0,
       color: Color(0xfff5f5f5),
       child: DateTimeField(
         style: TextStyle(

@@ -141,7 +141,7 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, true),
+      appBar: header(context, true, "Create New Event Request"),
       backgroundColor: Color(0xff274960),
       body: Container(
         decoration: BoxDecoration(
@@ -207,7 +207,6 @@ class _CreateEventState extends State<CreateEvent> {
                   textBody: 'Serving of Refreshments',
                 ),
                 InterTextFieldSpacing(),
-                /*selectRefreshmentType,*/
                 Container(
                   height: 55.0,
                   decoration: BoxDecoration(
@@ -361,7 +360,7 @@ class _CreateEventState extends State<CreateEvent> {
                     if (btnState == ButtonState.Idle) {
                       startLoading();
                       print('User Creating Event:');
-                      final FirebaseUser user = await loggedInUser;
+                      final FirebaseUser user = loggedInUser;
                       final userId = user.uid;
                       try {
                         Firestore.instance

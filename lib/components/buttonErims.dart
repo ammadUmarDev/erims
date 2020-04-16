@@ -2,9 +2,9 @@ import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+// ignore: must_be_immutable
 class ButtonErims extends StatefulWidget {
-
-  ButtonErims({@required this.onTap,@required this.labelText});
+  ButtonErims({@required this.onTap, @required this.labelText});
 
   dynamic Function(Function, Function, ButtonState) onTap;
   String labelText;

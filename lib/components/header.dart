@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-AppBar header(BuildContext context, bool leading) {
+import 'h1.dart';
+
+// ignore: missing_return
+AppBar header(BuildContext context, bool leading, String pageName) {
   if (leading == false)
     return AppBar(
       title: Text(
@@ -27,6 +30,22 @@ AppBar header(BuildContext context, bool leading) {
           ),
         ),
       ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(45.0),
+        child: Theme(
+          data: Theme.of(context).copyWith(accentColor: Colors.white),
+          child: Container(
+            height: 45.0,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: H1(
+              textBody: pageName,
+              color: Theme.of(context).primaryColor,
+            ),
+            decoration: BoxDecoration(color: Colors.white),
+          ),
+        ),
+      ),
     );
   if (leading == true)
     return AppBar(
@@ -48,6 +67,22 @@ AppBar header(BuildContext context, bool leading) {
               Theme.of(context).primaryColor,
               Theme.of(context).accentColor,
             ],
+          ),
+        ),
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(45.0),
+        child: Theme(
+          data: Theme.of(context).copyWith(accentColor: Colors.white),
+          child: Container(
+            height: 45.0,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: H1(
+              textBody: pageName,
+              color: Theme.of(context).primaryColor,
+            ),
+            decoration: BoxDecoration(color: Colors.white),
           ),
         ),
       ),

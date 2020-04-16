@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class H1TextStyle extends TextStyle {
   final fontFamily = "Cantarell";
-  final fontSize = 18.0;
+  final fontSize = 16.0;
   final Color color;
-  final fontWeight= FontWeight.w900;
+  final fontWeight = FontWeight.w900;
   H1TextStyle({this.color = const Color(0xFF35495e)});
 }
 
