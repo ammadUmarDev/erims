@@ -17,7 +17,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   static FirebaseUser loggedInUser;
   User userObj;
@@ -58,13 +58,13 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     if (loggedInUser != null) {
-      final double imageHeight = 250;
+      final double imageHeight = 340;
       final double circleAvatarRadius = 45;
 
       Image loadedImage = Image(
         height: imageHeight,
         image: AssetImage('assets/images/profileImage.jpg'),
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       );
 
       String avatarImage = 'assets/images/studentDefaultAvatar.png';
@@ -86,7 +86,10 @@ class _ProfileState extends State<Profile> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  loadedImage,
+                  RotationTransition(
+                    turns: new AlwaysStoppedAnimation(0 / 360),
+                    child: loadedImage,
+                  ),
                   Container(),
                 ],
               ),
@@ -125,8 +128,20 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              H1(
-                                textBody: userObj.fullName, //'name',
+                              Row(
+                                children: <Widget>[
+                                  H1(
+                                    textBody: userObj.fullName, //'name',
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 6),
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 15,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                               BodyText(
                                 textBody: userObj.designation,
@@ -162,7 +177,7 @@ class _ProfileState extends State<Profile> {
       }
 
       return Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           title: Text(
             "E.R.I.M.S",
             style: TextStyle(
@@ -199,7 +214,7 @@ class _ProfileState extends State<Profile> {
               },
             ),
           ],
-        ),
+        ),*/
         body: LoadorNot(),
       );
     } else {
@@ -213,7 +228,7 @@ class _ProfileState extends State<Profile> {
 
   Widget profileButtons(double imageHeight, User userObj) {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 30, bottom: 30),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 30),
       height: MediaQuery.of(context).size.height - imageHeight,
       width: MediaQuery.of(context).size.width,
       color: Colors.white,
