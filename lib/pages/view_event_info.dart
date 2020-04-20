@@ -92,8 +92,8 @@ class _ViewEventInfoState extends State<ViewEventInfo> {
 
   @override
   void initState() {
-    super.initState();
     getEventDoc();
+    super.initState();
   }
 
   void getEventDoc() async {
@@ -256,11 +256,10 @@ class _ViewEventInfoState extends State<ViewEventInfo> {
               H2(textBody: "Duration"),
               SizedBox(height: 5),
               H3(textBody: "Start Date and Time"),
-              BodyText(
-                  textBody: eventDoc.data["eStartDateTimeField"].toString()),
+              BodyText(textBody: eventDoc.data["eStartDateTime"].toString()),
               SizedBox(height: 5),
               H3(textBody: "End Date and Time"),
-              BodyText(textBody: eventDoc.data["eEndDateTimeField"].toString()),
+              BodyText(textBody: eventDoc.data["eEndDateTime"].toString()),
             ],
             onTapFunction: () {
               if (eventDoc.data["isApproved"] == false &&
@@ -283,16 +282,15 @@ class _ViewEventInfoState extends State<ViewEventInfo> {
                         ),
                         H3(textBody: "Start Date and Time"),
                         BodyText(
-                            textBody: eventDoc.data["eStartDateTimeField"]
-                                .toString()),
+                            textBody:
+                                eventDoc.data["eStartDateTime"].toString()),
                         SizedBox(height: 5),
                         eStartDateTimeField,
                         InterTextFieldSpacing(),
                         SizedBox(height: 5),
                         H3(textBody: "End Date and Time"),
                         BodyText(
-                            textBody:
-                                eventDoc.data["eEndDateTimeField"].toString()),
+                            textBody: eventDoc.data["eEndDateTime"].toString()),
                         SizedBox(height: 5),
                         eEndDateTimeField,
                         InterTextFieldSpacing(),
@@ -305,11 +303,11 @@ class _ViewEventInfoState extends State<ViewEventInfo> {
                               final doc = eventDoc;
                               if (doc.exists) {
                                 doc.reference.updateData({
-                                  "eStartDateTimeField":
+                                  "eStartDateTime":
                                       eStartDateTimeField.getReturnValue(),
                                 });
                                 doc.reference.updateData({
-                                  "eEndDateTimeField":
+                                  "eEndDateTime":
                                       eEndDateTimeField.getReturnValue(),
                                 });
                               }
@@ -510,8 +508,7 @@ class _ViewEventInfoState extends State<ViewEventInfo> {
               BodyText(textBody: eventDoc.data["rPersonNo"].toString()),
               SizedBox(height: 5),
               H3(textBody: "Serving Date and Time"),
-              BodyText(
-                  textBody: eventDoc.data["rServeDateTimeField"].toString()),
+              BodyText(textBody: eventDoc.data["rServeDateTime"].toString()),
             ],
             onTapFunction: () {
               if (eventDoc.data["isApproved"] == false &&

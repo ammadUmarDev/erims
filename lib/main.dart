@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xFFee8572),
       ),
       routes: {
-        "test": (context) => Test(),
+        /*"test": (context) => Test(),*/
         "home": (context) => Home(),
         "signIn": (context) => SignIn(),
         "signUp": (context) => SignUp(),

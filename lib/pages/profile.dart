@@ -6,6 +6,7 @@ import 'package:erims/components/shadowBox.dart';
 import 'package:erims/models/user.dart';
 import 'package:erims/pages/createdRequests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../components/bodyText.dart';
@@ -26,9 +27,9 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
     loggedInUser = null;
     getCurrentUser();
+    super.initState();
   }
 
   void getCurrentUser() async {
@@ -141,6 +142,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                       color: Theme.of(context).primaryColor,
                                     ),
                                   ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.power_settings_new,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      print('User Logout Successful');
+                                      loggedInUser.email;
+                                      _auth.signOut();
+                                      Navigator.pushNamed(context, "signIn");
+                                    },
+                                  ),
                                 ],
                               ),
                               BodyText(
@@ -218,11 +231,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         body: LoadorNot(),
       );
     } else {
-      return Center(
-        child: H1(
-          textBody: "Loading", //TODO: add the loading bar here
-        ),
-      );
+      return Container(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          linearProgress(context),
+        ],
+      ));
     }
   }
 

@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erims/components/bodyText.dart';
 import 'package:erims/models/user.dart';
+import 'package:erims/pages/eventEmail.dart';
 import 'package:erims/pages/view_event_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,11 +58,10 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     setState(() {
       isinfoPressed = true;
     });
+    super.initState();
   }
 
   @override
@@ -101,7 +103,7 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                           color: Colors.white,
                         ),
                         SizedBox(
-                          width: 10,
+                          height: 10,
                         ),
                         BodyText(
                           textBody: widget.eventStartDateTime +
@@ -534,6 +536,14 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                     content: Column(
                       children: <Widget>[
                         SizedBox(
+                          height: 10,
+                        ),
+                        H2(
+                          textBody:
+                              "Generate an email to concerned departments.",
+                          align: TextAlign.left,
+                        ),
+                        SizedBox(
                           height: 20,
                         ),
                         ButtonErims(
@@ -549,9 +559,76 @@ class _RequestFrontCardState extends State<RequestFrontCard> {
                                 doc.reference.updateData({
                                   "isApproved": true,
                                 });
+                                String recvStr =
+                                    doc.data["selectedServices"].toString();
+                                print("recv str document get:" +
+                                    recvStr.toString());
+                                String recvToPass;
+                                try {
+                                  recvStr =
+                                      recvStr.substring(1, recvStr.length - 1);
+                                  print("recv str clean:" + recvStr.toString());
+                                  recvStr = recvStr.toLowerCase();
+                                  /*
+                                  'Manager Admin',
+                                  'AM Media',
+                                  'Manager IT',
+                                  'Security',
+                                  'Manager SA',
+                                  'Maintenance Dept',
+                                  'Furniture',
+                                  'Sound System',
+                                  'Multi-media',
+                                  'Transport',
+                                   */
+
+                                  /*
+                                    fida.hassan@nu.edu.pk
+                                    muhammad.mumtaz@nu.edu.pk
+                                    haroon.kareem@nu.edu.pk
+                                    aman.ullah@nu.edu.pk
+                                   */
+                                  recvStr = recvStr.replaceAll("manager admin",
+                                      "muhammad.mumtaz@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "am media", "muhammad.mumtaz@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll("manager it",
+                                      "muhammad.mumtaz@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "security", "muhammad.mumtaz@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "manager sa", "aman.ullah@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "maintenance dept",
+                                      "aman.ullah@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "furniture", "aman.ullah@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll("sound system",
+                                      "haroon.kareem@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "multi-media", "haroon.kareem@nu.edu.pk");
+                                  recvStr = recvStr.replaceAll(
+                                      "transport", "fida.hassan@nu.edu.pk");
+                                  var recvList = recvStr.split(" ,");
+                                  recvList =
+                                      LinkedHashSet<String>.from(recvList)
+                                          .toList();
+                                  print("recv list" + recvList.toString());
+                                  String recvForward = recvList
+                                      .toString()
+                                      .substring(1, recvStr.length - 1);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EventEmail(
+                                              eventID: widget.eventID,
+                                              currentUser: widget.user,
+                                              recv: recvForward)));
+                                } catch (e) {
+                                  print("recv to pass:" + recvToPass);
+                                }
                               }
                               stopLoading();
-                              Navigator.pop(context);
                             } else {
                               stopLoading();
                             }
