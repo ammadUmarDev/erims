@@ -1,3 +1,92 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // For Image Picker
+import 'package:path/path.dart' as Path;
+
+class Test extends StatefulWidget {
+  @override
+  _TestState createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  File _file;
+  String _uploadedFileURL;
+
+  Future chooseFile() async {
+    await FilePicker.getFile(type: FileType.custom, allowedExtensions: ['pdf'])
+        .then((file) {
+      setState(() {
+        _file = file;
+      });
+    });
+  }
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('eventDocumentUpload/${Path.basename(_file.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(_file);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Firestore File Upload'),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Text('Selected Image'),
+            _file != null
+                ? Image.asset(
+                    _file.path,
+                    height: 150,
+                  )
+                : Container(height: 150),
+            _file == null
+                ? RaisedButton(
+                    child: Text('Choose File'),
+                    onPressed: chooseFile,
+                    color: Colors.cyan,
+                  )
+                : Container(),
+            _file != null
+                ? RaisedButton(
+                    child: Text('Upload File'),
+                    onPressed: uploadFile,
+                    color: Colors.cyan,
+                  )
+                : Container(),
+            _file != null
+                ? RaisedButton(
+                    child: Text('Clear Selection'),
+                  )
+                : Container(),
+            Text('Uploaded Image'),
+            _uploadedFileURL != null
+                ? Image.network(
+                    _uploadedFileURL,
+                    height: 150,
+                  )
+                : Container(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 
@@ -88,6 +177,7 @@ class Test extends StatelessWidget {
   }
 }
 
+*/
 /*
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -115,19 +205,31 @@ class _EventEmailState extends State<EventEmail> {
   final _auth = FirebaseAuth.instance;
 
   var _recipientController;
-  */
+  */ /*
+
+*/
 /*= TextEditingController(
     text: 'ammad.umar@outlook.com,i170092@nu.edu.pk',
   );*/ /*
+ */
+/*
 
-  var _subjectController; */
+  var _subjectController; */ /*
+
+*/
 /*= TextEditingController(text: 'Event '+eventDoc.data["eStartDateTimeField"]+' Approved!');*/ /*
+ */
+/*
 
   var _bodyController;
-  */
+  */ /*
+
+*/
 /*= TextEditingController(
     text: 'Ignore, we are testing.',
   );*/ /*
+ */
+/*
 
 
   @override
@@ -217,11 +319,15 @@ class _EventEmailState extends State<EventEmail> {
                     "\n" +
                     "\n" +
                     "Regards,"
-                */
+                */ /*
+
+*/
 /*"\n" +
                     widget.currentUser["fullName"] +
                     "\n" +
                     widget.currentUser["designation"]);*/ /*
+ */
+/*
 
                 );
           });
@@ -349,27 +455,37 @@ class _EventEmailState extends State<EventEmail> {
                       labelText: 'Body', border: OutlineInputBorder()),
                 ),
               ),
-              */
+              */ /*
+
+*/
 /*...attachments.map(
                 (item) => Text(
                   item,
                   overflow: TextOverflow.fade,
                 ),
               ),*/ /*
+ */
+/*
 
             ],
           ),
         ),
       ),
-      */
+      */ /*
+
+*/
 /*floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.find_in_page),
         label: Text('Attach Document'),
         onPressed: _openDocumentPicker,
       ),*/ /*
+ */
+/*
 
     );
   }
+
+*/ /*
 
 */
 /* void _openDocumentPicker() async {
@@ -378,6 +494,4 @@ class _EventEmailState extends State<EventEmail> {
       attachments.add(pick.path);
     });
   }*/ /*
-
-}
-*/
+ */

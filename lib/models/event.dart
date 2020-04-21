@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erims/components/PendingRequestCard.dart';
 import 'package:erims/components/bodyText.dart';
@@ -26,6 +28,8 @@ class Event {
   int rPersonNo, eAttendeesNo;
   List<String> selectedServices;
   bool isApproved, isRejected;
+  File file;
+  String uploadedFileUrl;
 
   Event(
     this.eName,
@@ -49,6 +53,8 @@ class Event {
     this.isApproved,
     this.forwardedTo,
     this.isRejected,
+    this.file,
+    this.uploadedFileUrl,
   );
 
   Event.fromFirebaseDocument(DocumentSnapshot firebaseDocument) {
@@ -75,6 +81,8 @@ class Event {
     isApproved = firebaseDocument.data['isApproved'];
     forwardedTo = firebaseDocument.data['forwardedTo'];
     isRejected = firebaseDocument.data['isRejected'];
+    uploadedFileUrl = firebaseDocument.data['filePathUploaded'];
+    file = null;
   }
 
   Future<DocumentReference> addToFirebase(Firestore firestore) async {
@@ -100,6 +108,7 @@ class Event {
       "isApproved": isApproved,
       "forwardedTo": forwardedTo,
       "isRejected": isRejected,
+      "filePathUploaded": uploadedFileUrl,
     });
   }
 

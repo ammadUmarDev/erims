@@ -4,6 +4,7 @@ import 'package:erims/components/attachmentFieldErims.dart';
 import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/header.dart';
 import 'package:erims/models/user.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,9 @@ import '../components/textFieldErims.dart';
 import '../components/h1.dart';
 import '../components/h2.dart';
 import 'package:erims/components/dropDownFieldErims.dart';
-
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:path/path.dart' as Path;
 import '../pages/confirm_create_event.dart';
 
 class CreateEvent extends StatefulWidget {
@@ -37,11 +40,36 @@ class _CreateEventState extends State<CreateEvent> {
   String userRole = "Student";
   String forwardToRole;
   User userObj;
+  File _file;
+  String _uploadedFileURL;
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+  }
+
+  Future chooseFile() async {
+    await FilePicker.getFile(type: FileType.custom, allowedExtensions: ['pdf'])
+        .then((file) {
+      setState(() {
+        _file = file;
+      });
+    });
+  }
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('eventDocumentUpload/${Path.basename(_file.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(_file);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+      });
+    });
   }
 
   void getCurrentUser() async {
@@ -122,10 +150,11 @@ class _CreateEventState extends State<CreateEvent> {
     keyboardType: TextInputType.phone,
     textFieldIcon: Icon(Icons.phone),
   );
-  DropDownFieldErims selectRefreshmentType = DropDownFieldErims(
+  /*DropDownFieldErims selectRefreshmentType = DropDownFieldErims(
     refreshmentType,
     defaultHeading: 'Refreshment Type',
-  );
+  );*/
+  String selectRefreshmentType;
   Text selectedRefreshmentType;
   TextFieldErims rPersonNoTextField = TextFieldErims(
     textFieldText: 'No Of Persons',
@@ -168,6 +197,73 @@ class _CreateEventState extends State<CreateEvent> {
             padding: EdgeInsets.all(20),
             child: ListView(
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        H2(
+                          textBody: 'Attach a Document (optional)',
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        _file == null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: chooseFile,
+                                color: Colors.white,
+                              )
+                            : Container(),
+                        /*_file != null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.cloud_upload,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: uploadFile,
+                                color: Colors.white,
+                              )
+                            : Container(),*/
+                        _file != null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.clear,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _file = null;
+                                  });
+                                },
+                                color: Colors.white,
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ],
+                ),
+                InterTextFieldSpacing(),
+                Column(
+                  children: <Widget>[
+                    _file != null
+                        ? Text(_file.path.toString())
+                        : Container(height: 50),
+                    /*_uploadedFileURL != null
+                        ? Text(
+                            _uploadedFileURL.toString(),
+                          )
+                        : Container(),*/
+                  ],
+                ),
+                InterTextFieldSpacing(),
                 H1(
                   textBody: 'Create Event',
                 ),
@@ -211,57 +307,6 @@ class _CreateEventState extends State<CreateEvent> {
                   textBody: 'Serving of Refreshments',
                 ),
                 InterTextFieldSpacing(),
-                Container(
-                  height: 55.0,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.grey[500],
-                      )),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 7,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: DropdownButton<Text>(
-                            isExpanded: true,
-                            isDense: false,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'SFUIDisplay',
-                              fontSize: 15,
-                            ),
-                            hint: Text("Refreshment Type"),
-                            value: selectedRefreshmentType,
-                            onChanged: (Text value) {
-                              setState(() {
-                                selectedRefreshmentType = value;
-                              });
-                            },
-                            items:
-                                refreshmentType.map((String refreshmentType) {
-                              return DropdownMenuItem<Text>(
-                                value: Text(refreshmentType),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      refreshmentType,
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                InterTextFieldSpacing(),
                 rPersonNoTextField,
                 InterTextFieldSpacing(),
                 rServeDateTimeField,
@@ -272,7 +317,6 @@ class _CreateEventState extends State<CreateEvent> {
                   textBody: 'Services Required',
                 ),
                 InterTextFieldSpacing(),
-
                 CheckboxGroup(
                   //TODO: customize display according to brand standards
                   labels: <String>[
@@ -359,23 +403,35 @@ class _CreateEventState extends State<CreateEvent> {
                     }),
                 InterTextFieldSpacing(),
                 InterTextFieldSpacing(),
+                InterTextFieldSpacing(),
+                H1(
+                  textBody: 'Please Verfiy Your Input.',
+                ),
+                InterTextFieldSpacing(),
                 //create event button
                 ButtonErims(
                   onTap: (startLoading, stopLoading, btnState) async {
                     if (btnState == ButtonState.Idle) {
                       startLoading();
                       print('User Creating Event:');
+
                       final FirebaseUser user = loggedInUser;
                       final userId = user.uid;
                       try {
-                        Firestore.instance
-                            .collection('users')
-                            .where('email', isEqualTo: _categoryFT)
-                            .snapshots()
-                            .listen((QuerySnapshot querySnapshot) {
-                          querySnapshot.documents.forEach((document) =>
-                              forwardToUser = document.documentID);
+                        setState(() {
+                          Firestore.instance
+                              .collection('users')
+                              .where('email', isEqualTo: _categoryFT)
+                              .snapshots()
+                              .listen((QuerySnapshot querySnapshot) {
+                            querySnapshot.documents.forEach((document) {
+                              forwardToUser = document.documentID;
+                              print("inside forEach" + forwardToUser);
+                            });
+                          });
                         });
+                        print(_categoryFT);
+                        print("before creating event object " + forwardToUser);
                         createdEvent = new Event(
                           eNameTextField.getReturnValue(),
                           eDescriptionTextField.getReturnValue(),
@@ -386,26 +442,32 @@ class _CreateEventState extends State<CreateEvent> {
                           int.parse(eAttendeesNoTextField.getReturnValue()),
                           eVenueTextField.getReturnValue(),
                           DateTime.now(),
-                          userObj.department,
-                          userObj.fullName,
+                          userObj.department.toString(),
+                          userObj.fullName.toString(),
                           oContactNoTextField.getReturnValue(),
                           rMenuItemsTextField.getReturnValue(),
                           int.parse(rPersonNoTextField.getReturnValue()),
                           rServeDateTimeField.getReturnValue(),
-                          selectRefreshmentType.getSelectedValue(),
+                          "High Tea",
                           selectedServices,
                           userId,
                           false,
                           forwardToUser,
                           false,
+                          _file,
+                          null,
                         );
-
+                        print("after creating event object " + forwardToUser);
                         if (createdEvent != null) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConfirmCreateEvent(
-                                      createdEvent: createdEvent)));
+                          try {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ConfirmCreateEvent(
+                                        createdEvent: createdEvent)));
+                          } catch (e) {
+                            print("Unable to push to confirm.");
+                          }
                         }
                       } catch (e) {
                         print(e);

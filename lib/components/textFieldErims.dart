@@ -43,7 +43,7 @@ class _TextFieldErimsState extends State<TextFieldErims> {
     return Column(
       children: <Widget>[
         Container(
-          height: 48.0,
+          height: 50.0,
           color: color,
           child: TextFormField(
             style: TextStyle(color: Colors.black, fontFamily: 'SFUIDisplay'),
