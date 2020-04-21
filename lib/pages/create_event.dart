@@ -1,5 +1,6 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erims/components/attachmentFieldErims.dart';
 import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/header.dart';
 import 'package:erims/models/user.dart';
@@ -137,6 +138,9 @@ class _CreateEventState extends State<CreateEvent> {
     textFieldText: 'Menu Items', //TODO: MAYBE: add options checklist
   );
   List<String> selectedServices;
+  AttachmentFieldErims eventAttachment = AttachmentFieldErims(
+    title: 'Event Attachments',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +292,7 @@ class _CreateEventState extends State<CreateEvent> {
                   },
                 ),
                 InterTextFieldSpacing(),
+                eventAttachment,
                 InterTextFieldSpacing(),
 
                 StreamBuilder<QuerySnapshot>(
