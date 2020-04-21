@@ -161,111 +161,116 @@ class _EventEmailState extends State<EventEmail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          "E.R.I.M.S",
-          style: TextStyle(
-            fontFamily: "Cantarell",
-            fontSize: 23.0,
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: () {
+        return new Future(() => false);
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            "E.R.I.M.S",
+            style: TextStyle(
+              fontFamily: "Cantarell",
+              fontSize: 23.0,
+              color: Colors.white,
+            ),
           ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: send,
-            icon: Icon(Icons.send),
-          )
-        ],
-        leading: Container(
-            padding: EdgeInsets.all(10),
-            child: Image.asset('assets/icons/erims.png')),
-        centerTitle: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.center,
-              end: Alignment.topRight,
-              colors: [
-                Theme.of(context).primaryColor,
-                Theme.of(context).accentColor,
-              ],
+          actions: <Widget>[
+            IconButton(
+              onPressed: send,
+              icon: Icon(Icons.send),
+            )
+          ],
+          leading: Container(
+              padding: EdgeInsets.all(10),
+              child: Image.asset('assets/icons/erims.png')),
+          centerTitle: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.topRight,
+                colors: [
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor,
+                ],
+              ),
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(45.0),
+            child: Theme(
+              data: Theme.of(context).copyWith(accentColor: Colors.white),
+              child: Container(
+                height: 45.0,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: H1(
+                  textBody: "Auto - Generated Email",
+                  color: Theme.of(context).primaryColor,
+                ),
+                decoration: BoxDecoration(color: Colors.white),
+              ),
             ),
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(45.0),
-          child: Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.white),
-            child: Container(
-              height: 45.0,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: H1(
-                textBody: "Auto - Generated Email",
-                color: Theme.of(context).primaryColor,
-              ),
-              decoration: BoxDecoration(color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _recipientController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Recipient',
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _recipientController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Recipient',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _subjectController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Subject',
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _subjectController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Subject',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _bodyController,
-                  maxLines: 30,
-                  decoration: InputDecoration(
-                      labelText: 'Body', border: OutlineInputBorder()),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _bodyController,
+                    maxLines: 30,
+                    decoration: InputDecoration(
+                        labelText: 'Body', border: OutlineInputBorder()),
+                  ),
                 ),
-              ),
-              /*...attachments.map(
+                /*...attachments.map(
                 (item) => Text(
                   item,
                   overflow: TextOverflow.fade,
                 ),
               ),*/
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      /*floatingActionButton: FloatingActionButton.extended(
+        /*floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.find_in_page),
         label: Text('Attach Document'),
         onPressed: _openDocumentPicker,
       ),*/
+      ),
     );
   }
 

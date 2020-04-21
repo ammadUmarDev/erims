@@ -1,3 +1,4 @@
+import 'package:erims/pages/about_us.dart';
 import 'package:erims/pages/create_event.dart';
 import 'package:erims/pages/dashboard.dart';
 import 'package:erims/pages/event_calender.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xFFee8572),
       ),
       routes: {
-        /*"test": (context) => Test(),*/
+        "test": (context) => Test(),
         "home": (context) => Home(),
         "signIn": (context) => SignIn(),
         "signUp": (context) => SignUp(),
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         "createEvent": (context) => CreateEvent(),
         "confirmCreateEvent": (context) => ConfirmCreateEvent(),
         "eventCalendar": (context) => EventCalender(),
+        "about": (context) => About(),
       },
     );
   }

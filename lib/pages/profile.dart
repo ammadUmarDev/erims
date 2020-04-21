@@ -5,10 +5,10 @@ import 'package:erims/components/progress.dart';
 import 'package:erims/components/shadowBox.dart';
 import 'package:erims/models/user.dart';
 import 'package:erims/pages/createdRequests.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../components/bodyText.dart';
 import '../components/h1.dart';
 import 'pendingRequests.dart';
@@ -24,6 +24,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   User userObj;
   //String userRole = "Student";
   bool load = false;
+  final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
   @override
   void initState() {
@@ -75,6 +76,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         avatarImage = 'assets/images/societyDefaultAvatar.png';
       } else if (userObj.designation == 'Mentor') {
         avatarImage = 'assets/images/mentorDefaultAvatar.png';
+      }
+
+      void _showSnackBar(BuildContext context, String message) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(message),
+          duration: const Duration(milliseconds: 1000),
+        ));
       }
 
       // ignore: non_constant_identifier_names
@@ -134,15 +142,15 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                   H1(
                                     textBody: userObj.fullName, //'name',
                                   ),
-                                  Padding(
+                                  /*Padding(
                                     padding: const EdgeInsets.only(left: 6),
                                     child: Icon(
                                       Icons.edit,
                                       size: 15,
                                       color: Theme.of(context).primaryColor,
                                     ),
-                                  ),
-                                  IconButton(
+                                  ),*/
+                                  /*IconButton(
                                     icon: Icon(
                                       Icons.power_settings_new,
                                       size: 20,
@@ -153,7 +161,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                       _auth.signOut();
                                       Navigator.pushNamed(context, "signIn");
                                     },
-                                  ),
+                                  ),*/
                                 ],
                               ),
                               BodyText(
@@ -229,6 +237,52 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           ],
         ),*/
         body: LoadorNot(),
+        floatingActionButton: Builder(
+          builder: (context) => FabCircularMenu(
+            key: fabKey,
+            alignment: Alignment.topRight,
+            ringColor: Colors.grey[900].withOpacity(0.2),
+            ringDiameter: 300.0,
+            ringWidth: 60.0,
+            fabSize: 50.0,
+            fabElevation: 8.0,
+            fabColor: Colors.white,
+            fabOpenIcon:
+                Icon(Icons.menu, color: Theme.of(context).primaryColor),
+            fabCloseIcon:
+                Icon(Icons.close, color: Theme.of(context).primaryColor),
+            fabMargin: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+            animationDuration: const Duration(milliseconds: 800),
+            animationCurve: Curves.easeInOutCirc,
+            children: <Widget>[
+              RawMaterialButton(
+                onPressed: () {},
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(24.0),
+                child: Icon(Icons.mode_edit, color: Colors.white),
+              ),
+              RawMaterialButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "about");
+                },
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(24.0),
+                child: Icon(Icons.info, color: Colors.white),
+              ),
+              RawMaterialButton(
+                onPressed: () {
+                  _showSnackBar(context, "You have logged out.");
+                  loggedInUser.email;
+                  _auth.signOut();
+                  Navigator.pushNamed(context, "signIn");
+                },
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(24.0),
+                child: Icon(Icons.power_settings_new, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
       );
     } else {
       return Container(
