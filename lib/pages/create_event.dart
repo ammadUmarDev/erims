@@ -1,6 +1,5 @@
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:erims/components/attachmentFieldErims.dart';
 import 'package:erims/components/buttonErims.dart';
 import 'package:erims/components/header.dart';
 import 'package:erims/models/user.dart';
@@ -167,9 +166,9 @@ class _CreateEventState extends State<CreateEvent> {
     textFieldText: 'Menu Items', //TODO: MAYBE: add options checklist
   );
   List<String> selectedServices;
-  AttachmentFieldErims eventAttachment = AttachmentFieldErims(
+  /*AttachmentFieldErims eventAttachment = AttachmentFieldErims(
     title: 'Event Attachments',
-  );
+  );*/
 
   @override
   Widget build(BuildContext context) {
@@ -197,73 +196,6 @@ class _CreateEventState extends State<CreateEvent> {
             padding: EdgeInsets.all(20),
             child: ListView(
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        H2(
-                          textBody: 'Attach a Document (optional)',
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        _file == null
-                            ? RaisedButton(
-                                child: Icon(
-                                  Icons.search,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                                onPressed: chooseFile,
-                                color: Colors.white,
-                              )
-                            : Container(),
-                        /*_file != null
-                            ? RaisedButton(
-                                child: Icon(
-                                  Icons.cloud_upload,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                                onPressed: uploadFile,
-                                color: Colors.white,
-                              )
-                            : Container(),*/
-                        _file != null
-                            ? RaisedButton(
-                                child: Icon(
-                                  Icons.clear,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _file = null;
-                                  });
-                                },
-                                color: Colors.white,
-                              )
-                            : Container(),
-                      ],
-                    ),
-                  ],
-                ),
-                InterTextFieldSpacing(),
-                Column(
-                  children: <Widget>[
-                    _file != null
-                        ? Text(_file.path.toString())
-                        : Container(height: 50),
-                    /*_uploadedFileURL != null
-                        ? Text(
-                            _uploadedFileURL.toString(),
-                          )
-                        : Container(),*/
-                  ],
-                ),
-                InterTextFieldSpacing(),
                 H1(
                   textBody: 'Create Event',
                 ),
@@ -335,8 +267,75 @@ class _CreateEventState extends State<CreateEvent> {
                     selectedServices = checked;
                   },
                 ),
+                /*InterTextFieldSpacing(),
+                eventAttachment,*/
                 InterTextFieldSpacing(),
-                eventAttachment,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        H2(
+                          textBody: 'Attach a Document (optional)',
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        _file == null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: chooseFile,
+                                color: Colors.white,
+                              )
+                            : Container(),
+                        /*_file != null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.cloud_upload,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: uploadFile,
+                                color: Colors.white,
+                              )
+                            : Container(),*/
+                        _file != null
+                            ? RaisedButton(
+                                child: Icon(
+                                  Icons.clear,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _file = null;
+                                  });
+                                },
+                                color: Colors.white,
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ],
+                ),
+                InterTextFieldSpacing(),
+                Column(
+                  children: <Widget>[
+                    _file != null
+                        ? Text(_file.path.toString())
+                        : Container(height: 50),
+                    /*_uploadedFileURL != null
+                        ? Text(
+                            _uploadedFileURL.toString(),
+                          )
+                        : Container(),*/
+                  ],
+                ),
                 InterTextFieldSpacing(),
 
                 StreamBuilder<QuerySnapshot>(
@@ -401,7 +400,6 @@ class _CreateEventState extends State<CreateEvent> {
                         ),
                       );
                     }),
-                InterTextFieldSpacing(),
                 InterTextFieldSpacing(),
                 InterTextFieldSpacing(),
                 H1(
