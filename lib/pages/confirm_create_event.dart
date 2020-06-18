@@ -288,6 +288,7 @@ class _ConfirmCreateEventState extends State<ConfirmCreateEvent> {
                               //invalidUsernameOrPassword=true;
                               _showDialog();
                             }
+                            _showDialog();
                           }
                           stopLoading();
                         } else {

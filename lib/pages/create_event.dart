@@ -104,6 +104,7 @@ class _CreateEventState extends State<CreateEvent> {
       }
     } catch (e) {
       print(e);
+      _showDialog();
     }
   }
 
@@ -121,7 +122,7 @@ class _CreateEventState extends State<CreateEvent> {
   TextFieldErims eDescriptionTextField = TextFieldErims(
     textFieldText: 'Event Description',
     textFieldIcon: Icon(Icons.event),
-    keyboardType: TextInputType.multiline,
+    //keyboardType: TextInputType.multiline,
   );
   TextFieldErims gNameTextField = TextFieldErims(
     textFieldText: 'Name', //TODO: allow addition of guests as per user's choice
@@ -465,10 +466,12 @@ class _CreateEventState extends State<CreateEvent> {
                                         createdEvent: createdEvent)));
                           } catch (e) {
                             print("Unable to push to confirm.");
+                            _showDialog();
                           }
                         }
                       } catch (e) {
                         print(e);
+                        _showDialog();
                       }
                       stopLoading();
                     } else {
@@ -484,6 +487,16 @@ class _CreateEventState extends State<CreateEvent> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(
+            "Unable to create event. Invalid Input. Please try again later."), //TODO: make dialog pretty
       ),
     );
   }

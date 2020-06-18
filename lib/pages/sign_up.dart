@@ -155,7 +155,7 @@ class _SignUpState extends State<SignUp> {
                         InterTextFieldSpacing(),
                         //designation
                         Container(
-                          height: 55.0,
+                          height: 50.0,
                           decoration: BoxDecoration(
                               color: Colors.grey[100],
                               borderRadius: BorderRadius.circular(4),
@@ -215,7 +215,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                         InterTextFieldSpacing(),
                         Container(
-                          height: 55.0,
+                          height: 50.0,
                           decoration: BoxDecoration(
                               color: Colors.grey[100],
                               borderRadius: BorderRadius.circular(4),
